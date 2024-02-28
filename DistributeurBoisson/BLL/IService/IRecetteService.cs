@@ -9,6 +9,6 @@ namespace DistributeurBoisson.BLL.IService
 {
     public interface IRecetteService
     {
-        public double CalculatePriceRecette(string recetteName);
+       public double CalculatePriceRecette(string recetteName);
     }
 }

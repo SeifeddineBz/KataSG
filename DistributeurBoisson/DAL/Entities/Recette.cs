@@ -2,9 +2,9 @@
 
 namespace DistributeurBoisson.DAL.Entities
 {
-    public class Ingredient
+    public class Recette
     {
         public string Nom { get; set; } = null!;
-        public double PrixParDose { get; set; }
+        public List<RecetteIngredient> Ingredients { get; set; } = null!;
     }
 }

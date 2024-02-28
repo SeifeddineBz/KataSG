@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace DistributeurBoisson.DAL.Entities
 {
     public class RecetteIngredient
     {
-        public string Ingredient { get; set; } = null!;
-        public int Quantite { get; set; }
+        public string NomRecette { get; set; } = null!;
+        public string NomIngredient { get; set; } = null!;
+        public double Quantite { get; set; }
         
     }
 }

@@ -1,23 +1,34 @@
-﻿using DistributeurBoisson.DAL.Entities;
+﻿using AutoMapper;
+using DistributeurBoisson.DAL.Entities;
 using DistributeurBoisson.DAL.IRepositories;
 using Newtonsoft.Json.Linq;
-using System.Xml.Linq;
 
 namespace DistributeurBoisson.DAL.Repositories
 {
     public class RecetteRepository : IRecetteRepository
     {
-        public List<RecetteIngredient> GetIngredientsByRecetteName(string recetteName)
+        protected IMapper _mapper;
+
+        public RecetteRepository(IMapper mapper)
         {
-            //JObject donnees = JsonFileReader.ReadJsonFile(jsonFilePath);
+            _mapper = mapper;
+        }
 
-            //JToken recetteData = donnees["recettes"].FirstOrDefault(r => r["nom"].ToString().Equals(recetteName, StringComparison.OrdinalIgnoreCase));
 
+        /// <summary>
+        /// Obtient une recette par son nom.
+        /// </summary>
+        /// <param name="recetteName">Le nom de la recette à rechercher.</param>
+        /// <returns>La recette correspondant au nom spécifié.</returns>
+        /// <exception cref="InvalidOperationException">Le nom de la recette spécifié n'a pas été trouvé.</exception>
+        public Recette GetRecetteByName(string recetteName)
+        {
             JToken recetteData = DataJson(Enum.Objects.recettes.ToString(), Enum.Attributes.nom.ToString(), recetteName);
 
-            if (recetteData != null)
+            if(recetteData != null)
             {
-                return ExtractIngredientsFromRecette(recetteData);
+                Recette recette = MapRecette(recetteData);
+                return recette;
             }
             else
             {
@@ -26,32 +37,41 @@ namespace DistributeurBoisson.DAL.Repositories
         }
 
 
-        private List<RecetteIngredient> ExtractIngredientsFromRecette(JToken recetteData)
+        /// <summary>
+        /// Récupère les données JSON pour un type et un nom spécifiques.
+        /// </summary>
+        /// <param name="type">Le type de données JSON à récupérer.</param>
+        /// <param name="name">Le nom de la propriété à rechercher.</param>
+        /// <param name="recetteName">Le nom de la recette à rechercher.</param>
+        /// <returns>Les données JSON correspondant à la recette spécifiée.</returns>
+        public JToken DataJson(string type, string name, string recetteName)
         {
-            List<RecetteIngredient> ingredients = new List<RecetteIngredient>();
+            JObject donnees = JsonFileReader.ReadJsonFile(GlobalVariable.jsonFilePath);
+            JToken recetteData = donnees[type]
+                .FirstOrDefault(r => r[name].ToString().Equals(recetteName, StringComparison.OrdinalIgnoreCase));
 
-            foreach (JToken ingredient in recetteData["ingredients"])
-            {
-                string nomIngredient = ingredient["ingredient"].ToString();
-                int quantite = Convert.ToInt32(ingredient["quantite"]);
-
-                ingredients.Add(new RecetteIngredient
-                {
-                    Ingredient = nomIngredient,
-                    Quantite = quantite
-                });
-            }
-
-            return ingredients;
+            return recetteData;
         }
 
 
-        private JToken DataJson(string type, string name, string recetteName)
+        /// <summary>
+        /// Mappe les données JSON d'une recette vers un objet Recette.
+        /// </summary>
+        /// <param name="recetteData">Les données JSON de la recette à mapper.</param>
+        /// <returns>La recette mappée.</returns>
+        private static Recette MapRecette(JToken recetteData)
         {
-            JObject donnees = JsonFileReader.ReadJsonFile(GlobalVariable.jsonFilePath);
-            JToken recetteData = donnees[type].FirstOrDefault(r => r[name].ToString().Equals(recetteName, StringComparison.OrdinalIgnoreCase));
-
-            return recetteData;
+            Recette recette = new Recette
+            {
+                Nom = recetteData["nom"].ToString(),
+                Ingredients = recetteData["ingredients"].Select(ingredient => new RecetteIngredient
+                {
+                    NomRecette = recetteData["nom"].ToString(),
+                    NomIngredient = ingredient["ingredient"].ToString(),
+                    Quantite = Convert.ToDouble(ingredient["quantite"])
+                }).ToList()
+            };
+            return recette;
         }
     }
 }

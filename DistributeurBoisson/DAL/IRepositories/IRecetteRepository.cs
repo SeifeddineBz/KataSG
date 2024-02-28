@@ -1,14 +1,12 @@
 ﻿using DistributeurBoisson.DAL.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
+
 
 namespace DistributeurBoisson.DAL.IRepositories
 {
     public interface IRecetteRepository
     {
-        public List<RecetteIngredient> GetIngredientsByRecetteName(string name);
+        public Recette GetRecetteByName(string recetteName);
+        public JToken DataJson(string type, string name, string recetteName);
     }
 }

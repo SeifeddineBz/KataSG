@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DistributeurBoisson.BLL.DTO;
+using DistributeurBoisson.BLL.Entities;
 using DistributeurBoisson.DAL.Entities;
 
 namespace BLL.Utilities
@@ -10,6 +11,9 @@ namespace BLL.Utilities
         {
             CreateMap<RecetteIngredient, RecetteIngredientDto>();
             CreateMap<RecetteIngredientDto, RecetteIngredient>();
+
+            CreateMap<Recette, RecetteDto>();
+            CreateMap<RecetteDto, Recette>();
         }
     }
 }

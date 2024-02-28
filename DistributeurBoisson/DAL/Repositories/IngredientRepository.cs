@@ -13,38 +13,49 @@ namespace DistributeurBoisson.DAL.Repositories
 {
     public class IngredientRepository : IIngredientRepository
     {
-        private IRecetteRepository _RepositoryRecette;
 
-        public IngredientRepository(IRecetteRepository repositoryRecette)
+
+        /// <summary>
+        /// Obtient la liste des ingrédients d'un certain type.
+        /// </summary>
+        /// <param name="type">Le type d'ingrédients à récupérer.</param>
+        /// <returns>La liste des ingrédients du type spécifié.</returns>
+        public List<Ingredient> GetIngredients(string type)
         {
-            _RepositoryRecette = repositoryRecette;
-        }
-        
-        //Retourne la liste des ingrédients (Nom est prix) pour une recette
-        public List<Ingredient> GetIngredients()
-        {
-            List<string> listIngrediantsName = GetIngrdientsNamesFromRecette();
-            List<Ingredient> ingrediants = DataJson(Enum.Objects.ingredients.ToString()).Where(ingredient => listIngrediantsName.Contains(ingredient.Nom)).ToList();
+            List<Ingredient> ingrediants = DataJson(type);
 
             return ingrediants;
         }
 
 
-        private List<string> GetIngrdientsNamesFromRecette()
-        {
-            List<RecetteIngredient> recetteIngredients = _RepositoryRecette.GetIngredientsByRecetteName(GlobalVariable.recetteName);
-            List<string> IngredientsList = recetteIngredients.Select(x => x.Ingredient).ToList();
 
-            return IngredientsList;
-        }
-
-        private List<Ingredient> DataJson(string type)
+        /// <summary>
+        /// Récupère les données JSON pour un type spécifique et les convertit en une liste d'ingrédients.
+        /// </summary>
+        /// <param name="type">Le type de données JSON à récupérer.</param>
+        /// <returns>La liste des ingrédients obtenue à partir des données JSON.</returns>
+        /// <exception cref="InvalidOperationException">Le type spécifié ne contient aucun ingrédient.</exception>
+        public List<Ingredient> DataJson(string type)
         {
             JObject donnees = JsonFileReader.ReadJsonFile(GlobalVariable.jsonFilePath);
-            return ConvertToListIngredients(donnees[type]);
+            if(donnees[type] != null)
+            {
+                return ConvertToListIngredients(donnees[type]);
+            }
+            else
+            {
+                throw new InvalidOperationException($"aucun ingrédient trouvé !.");
+            }
+            
         }
 
-        private List<Ingredient> ConvertToListIngredients(JToken ingrediantsToConvert)
+
+        /// <summary>
+        /// Convertit les données JSON des ingrédients en une liste d'objets Ingredient.
+        /// </summary>
+        /// <param name="ingrediantsToConvert">Les données JSON à convertir.</param>
+        /// <returns>La liste des ingrédients convertie.</returns>
+        private static List<Ingredient> ConvertToListIngredients(JToken ingrediantsToConvert)
         {
             List<Ingredient> ingredientsList = new List<Ingredient>();
 
@@ -61,16 +72,6 @@ namespace DistributeurBoisson.DAL.Repositories
 
             return ingredientsList;
         }
-
-
-
-
-
-
-
-
-
-
 
     }
 

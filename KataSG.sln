@@ -3,7 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DistributeurBoisson", "DistributeurBoisson\DistributeurBoisson.csproj", "{821EAB09-9810-4640-8A5A-37AF0934C7F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DistributeurBoisson", "DistributeurBoisson\DistributeurBoisson.csproj", "{821EAB09-9810-4640-8A5A-37AF0934C7F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DistributeurBoisson.Test", "DistributeurBoisson.Test\DistributeurBoisson.Test.csproj", "{D6139F6B-2D60-4F61-A30E-E6C8E3A8BC2D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{821EAB09-9810-4640-8A5A-37AF0934C7F0} = {821EAB09-9810-4640-8A5A-37AF0934C7F0}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +20,10 @@ Global
 		{821EAB09-9810-4640-8A5A-37AF0934C7F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{821EAB09-9810-4640-8A5A-37AF0934C7F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{821EAB09-9810-4640-8A5A-37AF0934C7F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6139F6B-2D60-4F61-A30E-E6C8E3A8BC2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6139F6B-2D60-4F61-A30E-E6C8E3A8BC2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6139F6B-2D60-4F61-A30E-E6C8E3A8BC2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6139F6B-2D60-4F61-A30E-E6C8E3A8BC2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

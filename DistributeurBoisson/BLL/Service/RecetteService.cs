@@ -1,14 +1,10 @@
 ﻿using AutoMapper;
 using DistributeurBoisson.BLL.DTO;
+using DistributeurBoisson.BLL.Entities;
 using DistributeurBoisson.BLL.IService;
 using DistributeurBoisson.DAL.Entities;
 using DistributeurBoisson.DAL.IRepositories;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Enum = DistributeurBoisson.DAL.Enum;
 
 namespace DistributeurBoisson.BLL.Service
 {
@@ -25,25 +21,41 @@ namespace DistributeurBoisson.BLL.Service
             _mapper = mapper;
         }
 
-        private List<RecetteIngredientDto> GetIngredientsByRecetteNameService(string recetteName)
+
+        /// <summary>
+        /// Obtient les ingrédients d'une recette spécifique.
+        /// </summary>
+        /// <param name="recetteName">Le nom de la recette.</param>
+        /// <returns>La liste des ingrédients de la recette.</returns>
+        public List<RecetteIngredientDto> GetIngredientsByRecetteNameService(string recetteName)
         {
-            List<RecetteIngredient> ingredients = _RepositoryRecette.GetIngredientsByRecetteName(recetteName);
-            return _mapper.Map<List<RecetteIngredientDto>>(ingredients);
+            Recette recetteEntity = _RepositoryRecette.GetRecetteByName(recetteName);
+            RecetteDto recette = _mapper.Map<RecetteDto>(recetteEntity);
+            List<RecetteIngredientDto> recetteingredients = _mapper.Map<List<RecetteIngredientDto>>(recette.Ingredients);
+            return recetteingredients;
         }
 
+
+
+        /// <summary>
+        /// Calcule le prix d'une recette spécifique.
+        /// </summary>
+        /// <param name="recetteName">Le nom de la recette.</param>
+        /// <returns>Le prix de la recette.</returns>
         public double CalculatePriceRecette(string recetteName)
         {
             List<RecetteIngredientDto> ingredientsWithQuantites = GetIngredientsByRecetteNameService(recetteName);
-            List<Ingredient> ingredients = _RepositoryIngredient.GetIngredients();
-            //List<IngredientDto> ingredientDtos = _mapper.Map<List<IngredientDto>>(ingredients);
+            List<Ingredient> ingredients = _RepositoryIngredient.GetIngredients(Enum.Objects.ingredients.ToString());
+
             double price = 0;
 
             foreach (RecetteIngredientDto ingredient in ingredientsWithQuantites)
             {
-                price += ingredients.FirstOrDefault(x => x.Nom == ingredient.Ingredient).PrixParDose * ingredient.Quantite;
+                price += ingredients.FirstOrDefault(x => x.Nom == ingredient.NomIngredient).PrixParDose * ingredient.Quantite;
             }
 
             return price * GlobalVariable.margeBenefice;
         }
+
     }
 }
