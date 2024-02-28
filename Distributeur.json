@@ -1,0 +1,18 @@
+{
+  "ingredients": [
+    { "nom": "Café", "prixParDose": 1 },
+    { "nom": "Sucre", "prixParDose": 0.1 },
+    { "nom": "Crème", "prixParDose": 0.5 },
+    { "nom": "Thé", "prixParDose": 2 },
+    { "nom": "Eau", "prixParDose": 0.2 },
+    { "nom": "Chocolat", "prixParDose": 1 },
+    { "nom": "Lait", "prixParDose": 0.4 }
+  ],
+  "recettes": [
+    { "nom": "Expresso", "ingredients": [{ "ingredient": "Café", "quantite": 1 }, { "ingredient": "Eau", "quantite": 1 }] },
+    { "nom": "Allongé", "ingredients": [{ "ingredient": "Café", "quantite": 1 }, { "ingredient": "Eau", "quantite": 2 }] },
+    { "nom": "Cappuccino", "ingredients": [{ "ingredient": "Café", "quantite": 1 }, { "ingredient": "Chocolat", "quantite": 1 }, { "ingredient": "Eau", "quantite": 1 }, { "ingredient": "Crème", "quantite": 1 }] },
+    { "nom": "Chocolat", "ingredients": [{ "ingredient": "Chocolat", "quantite": 3 }, { "ingredient": "Lait", "quantite": 2 }, { "ingredient": "Eau", "quantite": 1 }, { "ingredient": "Sucre", "quantite": 1 }] },
+    { "nom": "Thé", "ingredients": [{ "ingredient": "Thé", "quantite": 1 }, { "ingredient": "Eau", "quantite": 2 }] }
+  ]
+}
